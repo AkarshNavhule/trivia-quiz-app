@@ -128,7 +128,13 @@ export default function QuizClient({ questions, user }) {
           Submit Quiz
         </button>
       ) : (
+        <>
         <h2>Your Score: {score.toFixed(2)}%</h2>
+        <p style={{ marginTop: '0.5rem' }}>
+      Results stored in mongoDB 
+    </p>
+  </>
+        
       )}
 
       <p>

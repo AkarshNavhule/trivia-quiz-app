@@ -9,6 +9,9 @@ export default function DashboardClient({ scores }) {
   const { data: session, status } = useSession();
   const [isSignedOut, setIsSignedOut] = useState(false);
   const [localScores, setLocalScores] = useState([]);
+  // 1) Add a state variable for the "deleted" message
+  const [deletedMessage, setDeletedMessage] = useState('');
+
   if (status === 'loading') {
     return <p className="container">Loading...</p>;
   }
@@ -37,11 +40,16 @@ export default function DashboardClient({ scores }) {
       body: JSON.stringify({ userId: session.user.id }),
     });
 
-    // Refresh local state so scores list is empty
+    // 2) Clear local state & show the deleted message
     setLocalScores([]);
-    localStorage.removeItem("quizScores");
-  } 
+    localStorage.removeItem('quizScores');
+    setDeletedMessage('Scores deleted from mongoDB');
 
+    // 3) Hide the message after 3 seconds
+    setTimeout(() => {
+      setDeletedMessage('');
+    }, 3000);
+  }
 
   if (isSignedOut) {
     return (
@@ -97,14 +105,19 @@ export default function DashboardClient({ scores }) {
             <button>Play Quiz</button>
           </Link>
           <button onClick={handleSignOut}>Sign Out</button>
-          {/* Example: Clear History button, etc. */}
 
+          {/* Clear History button */}
           <button onClick={handleClearHistory} style={{ marginLeft: '1rem' }}>
             Clear History
           </button>
         </div>
+      )}
 
-        
+      {/* 4) Conditionally display the "deleted" message if non-empty */}
+      {deletedMessage && (
+        <p style={{ marginTop: '1rem', color: 'red' }}>
+          {deletedMessage}
+        </p>
       )}
     </div>
   );
