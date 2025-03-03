@@ -10,7 +10,7 @@ export default async function QuizPage() {
   }
 
   // Example fetch to your own /api/trivia route
-  const res = await fetch('http://localhost:3000/api/trivia', { cache: 'no-store' });
+  const res = await fetch('https://trivia-quiz-app-kohl.vercel.app/api/trivia', { cache: 'no-store' });
   const triviaData = await res.json();
   const questions = triviaData.results || [];
 
